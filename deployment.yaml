@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fix-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fix-server
+  template:
+    spec:
+      containers:
+        - name: fix-server
+          image: fix-protocol-testing
+          ports:
+            - containerPort: 5000

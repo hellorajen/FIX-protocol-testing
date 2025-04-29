@@ -1,0 +1,22 @@
+# Use alpine for smaller image
+FROM python:3.9-alpine
+
+# Install dependencies
+RUN apk add --no-cache gcc musl-dev
+
+# Create non-root user
+RUN adduser -D fixuser
+USER fixuser
+WORKDIR /home/fixuser/app
+
+# Install requirements
+COPY --chown=fixuser:fixuser requirements.txt .
+RUN pip install --user -r requirements.txt
+
+# Copy app
+COPY --chown=fixuser:fixuser . .
+
+# Health check
+HEALTHCHECK --interval=30s CMD python healthcheck.py
+
+CMD ["python", "fix_server.py"]

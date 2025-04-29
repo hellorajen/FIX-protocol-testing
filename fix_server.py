@@ -1,3 +1,4 @@
+import datetime
 import socket
 from simplefix import FixParser
 
@@ -7,7 +8,11 @@ class FixServer:
         self.sock.bind((host, port))
         self.sock.listen(1)
         self.parser = FixParser()
-
+        
+    def log_message(msg):
+        with open("fix_messages.log", "a") as f:
+            f.write(f"{datetime.datetime.now()} | {msg}\n")
+            
     def start(self):
         print("FIX Server listening on port 5000...")
         conn, addr = self.sock.accept()
@@ -22,6 +27,10 @@ class FixServer:
                 if msg is None:
                     break
                 print(f"Received FIX message: {msg}")
+                self.log_message(msg)
+                # Here you can add logic to process the FIX message
+                # For example, you can send a response back to the client   
+                
         conn.close()
 
 if __name__ == "__main__":

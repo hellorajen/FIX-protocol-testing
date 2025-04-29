@@ -9,7 +9,7 @@ class FixServer:
         self.sock.listen(1)
         self.parser = FixParser()
         
-    def log_message(msg):
+    def log_message(self, msg):
         with open("fix_messages.log", "a") as f:
             f.write(f"{datetime.datetime.now()} | {msg}\n")
             
